@@ -11,8 +11,24 @@
   whether or not a twin delayed update is used.
   
 > Results:
-+ Tested in LunarLander-v2, LunarLanderContinuous-v2, Pendulum-v0. 
-  Both TD3 and PPO works.
++ Tested in gym and MuJoCo, both TD3 and PPO works.
 + TD3 is very sample efficient but use far more time for training.
 + PPO is faster than off policy algorithm, because using parallel
   training methods via mpi4py and computing efficiency.
++ TD3 may usually have better performance.  
+  
+> Usage:
++ Windows: change the code 
+  
+  ```os.path.abspath('.')``` -> ```os.path.abspath('..')```
+  
+  to store the experiments results in current folder.
+  
++ Linux:
+  Has been tested, just run the following code in terminal
+  
+  ```cd PPO```
+  
+  ```chmod +x ./test.sh```
+
+  ```./run_experiments.sh```
