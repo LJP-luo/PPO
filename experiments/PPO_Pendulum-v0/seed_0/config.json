@@ -1,0 +1,44 @@
+{
+    "clip_ratio":	0.2,
+    "env_name":	"Pendulum-v0",
+    "epochs":	100,
+    "exp_name":	"PPO",
+    "gamma":	0.99,
+    "lam":	0.97,
+    "logger":	{
+        "<utils.logx.EpochLogger object at 0x0000017A946702B0>":	{
+            "epoch_dict":	{},
+            "exp_name":	"PPO",
+            "first_row":	true,
+            "log_current_row":	{},
+            "log_headers":	[],
+            "output_dir":	"C:\\Users\\10849\\Desktop\\DRL\\PPO/experiments/PPO_Pendulum-v0/seed_0",
+            "output_file":	{
+                "<_io.TextIOWrapper name='C:\\\\Users\\\\10849\\\\Desktop\\\\DRL\\\\PPO/experiments/PPO_Pendulum-v0/seed_0\\\\progress.txt' mode='w' encoding='cp936'>":	{
+                    "mode":	"w"
+                }
+            }
+        }
+    },
+    "logger_kwargs":	{
+        "env_name":	"Pendulum-v0",
+        "exp_name":	"PPO",
+        "output_dir":	null
+    },
+    "max_ep_len":	1000,
+    "pi_lr":	0.0003,
+    "policy":	"ActorCritic",
+    "policy_kwargs":	{
+        "hidden_sizes":	[
+            64,
+            64
+        ]
+    },
+    "save_freq":	10,
+    "seed":	0,
+    "steps_per_epoch":	4000,
+    "target_kl":	0.1,
+    "train_pi_iters":	80,
+    "train_v_iters":	80,
+    "vf_lr":	0.001
+}
