@@ -50,7 +50,7 @@ class Logger:
                  exp_name=None, env_name=None, seed=0):
 
         if process_id() == 0:
-            self.output_dir = output_dir or f"{os.path.abspath('..')}" \
+            self.output_dir = output_dir or f"{os.path.abspath('.')}" \
                                             f"/experiments/{exp_name}_{env_name}/seed_{seed}"
             if os.path.exists(self.output_dir):
                 print(f"Warning: Log dir {self.output_dir} "

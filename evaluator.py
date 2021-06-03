@@ -2,8 +2,8 @@ import json
 import os
 import torch
 import gym
-from policy.on_policy import ppo_mlp
-from policy.off_policy import td3_mlp
+import time
+from policy import td3_mlp, ppo_mlp
 
 
 def load_data_from_json(logdir):
@@ -33,7 +33,7 @@ def load_data_from_json(logdir):
     return env_name, model_name, hidden_sizes, exp_name, output_dir
 
 
-def load_policy(logdir, policy=None):
+def load_policy(logdir):
     """ Load a pytorch policy saved with Spinning Up Logger."""
 
     env_name, model_name, hidden_sizes, exp_name, output_dir = \
@@ -43,9 +43,9 @@ def load_policy(logdir, policy=None):
 
     env = gym.make(env_name)
     model = None
-    if model_name == 'ActorCritic' and policy == 'off_policy':
+    if model_name == 'ActorCritic' and exp_name == 'TD3':
         model = td3_mlp.ActorCritic(env.observation_space, env.action_space, hidden_sizes)
-    elif model_name == 'ActorCritic' and policy == 'on_policy':
+    elif model_name == 'ActorCritic' and exp_name == 'PPO':
         model = ppo_mlp.ActorCritic(env.observation_space, env.action_space, hidden_sizes)
     model.load_state_dict(torch.load(model_file))
 
@@ -59,14 +59,14 @@ def load_policy(logdir, policy=None):
     return env, get_action
 
 
-def run_policy(logdir, max_ep_len=2000, num_episodes=4, render=True, policy=None):
-    env, get_action = load_policy(logdir, policy)
+def run_policy(logdir, max_ep_len=1000, num_episodes=4, render=True):
+    env, get_action = load_policy(logdir)
 
     for ep in range(num_episodes):
         o, r, d, ep_ret, ep_len = env.reset(), 0, False, 0, 0
         if render:
             env.render()
-            # time.sleep(1e-3)
+            time.sleep(1)
         for t in range(max_ep_len):
             if render:
                 env.render()
@@ -85,16 +85,12 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--policy', type=str,
-                        choices=['off_policy', 'on_policy'], default='on_policy')
-
-    parser.add_argument('--logdir', '-l', type=str,
-                        default='experiments/PPO_LunarLanderContinuous-v2/seed_0',
-                        help='The sub-direction in ./experiments which stores current exp info.')
+    parser.add_argument('--logdir', type=str, default='experiments/PPO_Ant-v2/seed_0',
+                        help='E.g. experiments/PPO_HalfCCheetah-v2/seed_x')
 
     parser.add_argument('--episodes', '-n', type=int, default=4)
-    parser.add_argument('--max_ep_len', type=int, default=2000)
+    parser.add_argument('--max_ep_len', type=int, default=1000)
     parser.add_argument('--render', '-r', default=True)
     args = parser.parse_args()
 
-    run_policy(args.logdir, args.max_ep_len, args.episodes, args.render, args.policy)
+    run_policy(args.logdir, args.max_ep_len, args.episodes, args.render)

@@ -2,7 +2,6 @@ import copy
 import numpy as np
 import time
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 from torch.optim import Adam
 import gym
@@ -10,7 +9,7 @@ from typing import Optional
 import itertools
 from utils.util import count_vars
 from utils.logx import EpochLogger
-from policy.off_policy.td3_mlp import ActorCritic
+from policy.td3_mlp import ActorCritic
 from storage.off_policy import ReplayBuffer
 
 
