@@ -3,14 +3,13 @@ from algos.ppo import PPO
 from policy.ppo_mlp import ActorCritic
 import psutil
 
-
 if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
     # ----------------------- env and logger -------------------------
     parser.add_argument('--exp_name', type=str, default='PPO')
-    parser.add_argument('--env', type=str, default='Ant-v2')
+    parser.add_argument('--env', type=str, default='LunarLander-v2')
     parser.add_argument('--seed', '-s', type=int, default=0)
     parser.add_argument('--output_dir', '-o', default=None)
 
@@ -38,9 +37,13 @@ if __name__ == '__main__':
 
     # Determine number of CPU cores to run on
     num_cpu = psutil.cpu_count(logical=False) if args.cpu is None else args.cpu
+    # num_cpu = psutil.cpu_count(logical=False)
     mpi_fork(num_cpu)  # run parallel code with mpi
 
-    logger_kwargs = dict(output_dir=args.output_dir, exp_name=args.exp_name, env_name=args.env)
+    logger_kwargs = dict(output_dir=args.output_dir,
+                         exp_name=args.exp_name,
+                         env_name=args.env,
+                         seed=args.seed)
     ac_kwargs = dict(hidden_sizes=args.hid)
     ppo_kwargs = dict(
         env_name=args.env,

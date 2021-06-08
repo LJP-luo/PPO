@@ -5,9 +5,14 @@
 # chmod +x ./test.sh
 # ./run_experiments.sh
 
-for (( i = 0; i < 2; i++ )); do
+for seed in 0 100 1000; do
     python ppo_runner.py \
-    --env "HumanoidStandup-v2" \
-    --seed $i \
-    --epochs 500
+    --env "LunarLander-v2" \
+    --seed $seed \
+    --epochs 150
+
+    python ppo_runner.py \
+    --env 'LunarLanderContinuous-v2' \
+    --seed $seed \
+    --epochs 150
 done

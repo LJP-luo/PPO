@@ -118,7 +118,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('logdir', nargs='*', default='',
                         help='E.g. [experiments/PPO_HalfCCheetah-v2/seed_x, ...]')
-    parser.add_argument('--xaxis', '-x', default='Time')
+    parser.add_argument('--xaxis', '-x', default='TotalEnvInteracts')
     parser.add_argument('--value', '-y', default='AverageEpRet')
     parser.add_argument('--smooth', '-s', type=int, default=1)
     parser.add_argument('--est', default='mean')

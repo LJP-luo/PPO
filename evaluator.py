@@ -4,6 +4,7 @@ import torch
 import gym
 import time
 from policy import td3_mlp, ppo_mlp
+from utils.logx import EpochLogger
 
 
 def load_data_from_json(logdir):
@@ -56,11 +57,13 @@ def load_policy(logdir):
             action = model.act(x)
         return action
 
-    return env, get_action
+    logger = EpochLogger(output_dir=output_dir, output_fname='evaluation.txt')
+
+    return env, get_action, logger
 
 
 def run_policy(logdir, max_ep_len=1000, num_episodes=4, render=True):
-    env, get_action = load_policy(logdir)
+    env, get_action, logger = load_policy(logdir)
 
     for ep in range(num_episodes):
         o, r, d, ep_ret, ep_len = env.reset(), 0, False, 0, 0
@@ -76,7 +79,11 @@ def run_policy(logdir, max_ep_len=1000, num_episodes=4, render=True):
             ep_len += 1
 
             if d or (ep_len == max_ep_len - 1):
-                print(f'Episode {ep + 1} \t EpRet {ep_ret:.3f} \t EpLen {ep_len}')
+                logger.log_tabular('Epoch', ep + 1)
+                logger.log_tabular('EpRet', round(ep_ret, 2))
+                logger.log_tabular('EpLen', ep_len)
+                logger.dump_tabular()
+                # print(f'Episode {ep + 1} \t EpRet {ep_ret:.3f} \t EpLen {ep_len}')
                 break
     env.close()
 

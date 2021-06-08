@@ -5,7 +5,7 @@ import sys
 import numpy as np
 
 
-def mpi_fork(n, bind_to_core=False):
+def mpi_fork(n, bind_to_core=False, use_hwthread_cpus=True):
     if n <= 1:
         return
     if os.getenv("IN_MPI") is None:
@@ -18,6 +18,8 @@ def mpi_fork(n, bind_to_core=False):
         args = ["mpiexec", "-n", str(n)]
         if bind_to_core:
             args += ["-bind-to", "core"]
+        if use_hwthread_cpus:
+            args += ['--use-hwthread-cpus']
         # find an executable python and
         args += [sys.executable] + sys.argv
         print(args)
